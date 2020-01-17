@@ -8,6 +8,7 @@
 		* the paralel values with secondary diagonal values of order X
 */
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <math.h>
@@ -15,6 +16,8 @@
 #ifndef MATRIX_STD_LENGTH
 #define MATRIX_STD_LENGTH 100
 #endif
+
+using namespace std::chrono;
 
 class systemException : public std::exception {
 private:
@@ -227,6 +230,8 @@ int main(int argc, char const *argv[]) {
 	dataProcessor __initializeProcessor__;
 	matrixType<int> MTRefference;
 
+  auto start = high_resolution_clock::now();
+
 	__initializeProcessor__.readMatrix ((char*)"matrix.data", MTRefference);
 	__initializeProcessor__.putsMatrix (MTRefference);
 	std::cout << '\n';
@@ -239,6 +244,12 @@ int main(int argc, char const *argv[]) {
   __initializeProcessor__.matrixTransposition (MTRefference);
   std::cout << '\n';
   __initializeProcessor__.putsMatrix (MTRefference);
+
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
 
 	return 0;
 }

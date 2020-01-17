@@ -8,12 +8,15 @@
     * interchange the two values in the one dimensional array
 */
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 
 #ifndef STD_LENGTH
 #define STD_LENGTH 1000
 #endif
+
+using namespace std::chrono;
 
 class systemException : public std::exception {
 private:
@@ -120,6 +123,7 @@ template <class Type> void minMaxWorkFlow::outputOneDimensionalArray (oneDimensi
   else
     for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
       std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
+  std::cout << '\n';
 }
 
 template <class Type> Type minMaxWorkFlow::maximOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
@@ -179,6 +183,8 @@ int main(int argc, char const *argv[]) {
   minMaxWorkFlow minMaxRefference;
   oneDimensionalArrayType <int> ODARefference;
 
+  auto start = high_resolution_clock::now();
+
   minMaxRefference.readOneDimensionalArray ((char*)"ODA.data", ODARefference);
   minMaxRefference.outputOneDimensionalArray (ODARefference);
   std::cout << '\n';
@@ -188,6 +194,13 @@ int main(int argc, char const *argv[]) {
   minMaxRefference.interchangeMaxMin (ODARefference);
   std::cout << '\n';
   minMaxRefference.outputOneDimensionalArray (ODARefference);
+  std::cout << '\n';
+  
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }
