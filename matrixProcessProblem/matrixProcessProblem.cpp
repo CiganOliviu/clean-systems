@@ -149,8 +149,7 @@ template <class Type> void dataProcessor::readMatrix (char * fileName, matrixTyp
 
     dataStream.close();
   }
-  else
-    std::cerr << "Unable to open file\n";
+  else throw systemException("Unable to open file");
 }
 
 template <class Type> void dataProcessor::putsMatrix (matrixType<Type> & MTObject) {
