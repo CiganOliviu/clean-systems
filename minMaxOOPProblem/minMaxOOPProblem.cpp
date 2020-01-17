@@ -1,3 +1,13 @@
+/*
+  min max OOP problem
+  Tasks:
+    * read one dimensional array
+    * output the one dimensional array with the new values
+    * get the maximmum value
+    * get the minimum value
+    * interchange the two values in the one dimensional array
+*/
+
 #include <fstream>
 #include <iostream>
 
