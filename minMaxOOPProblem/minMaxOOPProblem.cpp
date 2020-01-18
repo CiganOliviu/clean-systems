@@ -120,9 +120,10 @@ template <class Type> void minMaxWorkFlow::outputOneDimensionalArray (oneDimensi
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
-  else
-    for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
-      std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
+    
   std::cout << '\n';
 }
 
@@ -132,10 +133,10 @@ template <class Type> Type minMaxWorkFlow::maximOneDimensionalArray (oneDimensio
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
-  else
-    for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
-      if (maxim < ODARefference.oneDimensionalArray[iterator])
-        maxim = ODARefference.oneDimensionalArray[iterator];
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    if (maxim < ODARefference.oneDimensionalArray[iterator])
+      maxim = ODARefference.oneDimensionalArray[iterator];
 
   return maxim;
 }
@@ -146,10 +147,10 @@ template <class Type> Type minMaxWorkFlow::minimOneDimensionalArray (oneDimensio
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
-  else
-    for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
-      if (minim > ODARefference.oneDimensionalArray[iterator])
-        minim = ODARefference.oneDimensionalArray[iterator];
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    if (minim > ODARefference.oneDimensionalArray[iterator])
+      minim = ODARefference.oneDimensionalArray[iterator];
 
   return minim;
 }
@@ -169,11 +170,11 @@ template <class Type> void minMaxWorkFlow::interchangeMaxMin (oneDimensionalArra
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
-  else
-    for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++) {
-      if (maxim == ODARefference.oneDimensionalArray[iterator]) posMax = iterator;
-      if (minim == ODARefference.oneDimensionalArray[iterator]) posMin = iterator;
-    }
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++) {
+    if (maxim == ODARefference.oneDimensionalArray[iterator]) posMax = iterator;
+    if (minim == ODARefference.oneDimensionalArray[iterator]) posMin = iterator;
+  }
 
   interchangeValues(&ODARefference.oneDimensionalArray[posMax], &ODARefference.oneDimensionalArray[posMin]);
 }
@@ -195,7 +196,7 @@ int main(int argc, char const *argv[]) {
   std::cout << '\n';
   minMaxRefference.outputOneDimensionalArray (ODARefference);
   std::cout << '\n';
-  
+
   auto stop = high_resolution_clock::now();
 
   auto duration = duration_cast<seconds>(stop - start);
