@@ -4,8 +4,8 @@
     * read matrix from a file
     * print matrix
     * the elements from the main diagonal who are prime
-		* the paralel values with main diagonal values of order X
-		* the paralel values with secondary diagonal values of order X
+    * the paralel values with main diagonal values of order X
+    * the paralel values with secondary diagonal values of order X
 */
 
 #include <chrono>
