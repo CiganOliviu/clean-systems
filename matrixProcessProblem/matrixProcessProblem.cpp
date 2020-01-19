@@ -4,8 +4,8 @@
     * read matrix from a file
     * print matrix
     * the elements from the main diagonal who are prime
-		* the paralel values with main diagonal values of order X
-		* the paralel values with secondary diagonal values of order X
+	* the paralel values with main diagonal values of order X
+	* the paralel values with secondary diagonal values of order X
 */
 
 #include <chrono>
@@ -21,14 +21,14 @@ using namespace std::chrono;
 
 class systemException : public std::exception {
 private:
-  std::string processMessage;
+	std::string processMessage;
 
 public:
-  systemException (std::string errorMessage) : processMessage(errorMessage) {}
+	systemException (std::string errorMessage) : processMessage(errorMessage) {}
 
-  const char * what () const throw ();
+	const char * what () const throw ();
 
-  virtual ~systemException () throw () {}
+	virtual ~systemException () throw () {}
 };
 
 const char * systemException::what () const throw () {
@@ -89,7 +89,7 @@ private:
 	validationRules __rules__;
 
 	template <class Type> bool isPrime (Type parameter);
-  template <class Type> void interchangeValues (Type * parameterOne, Type * parameterTwo);
+  	template <class Type> void interchangeValues (Type * parameterOne, Type * parameterTwo);
 
 public:
 	dataProcessor () {}
@@ -99,7 +99,7 @@ public:
 	template <class Type> void primeValuesFromMainDiagonal (matrixType<Type> & MTObject);
 	template <class Type> void paralelValuesWithMD (matrixType<Type> & MTObject);
 	template <class Type> void paralelValuesWithSD (matrixType<Type> & MTObject);
-  template <class Type> void matrixTransposition (matrixType<Type> & MTObject);
+  	template <class Type> void matrixTransposition (matrixType<Type> & MTObject);
 
 	virtual ~dataProcessor () {}
 };
@@ -117,42 +117,42 @@ template <class Type> bool dataProcessor::isPrime (Type parameter) {
 
 template <class Type> void dataProcessor::interchangeValues (Type * parameterOne, Type * parameterTwo) {
 
-  * parameterOne = * parameterOne + * parameterTwo;
-  * parameterTwo = * parameterOne - * parameterTwo;
-  * parameterOne = * parameterOne - * parameterTwo;
+	* parameterOne = * parameterOne + * parameterTwo;
+	* parameterTwo = * parameterOne - * parameterTwo;
+	* parameterOne = * parameterOne - * parameterTwo;
 }
 
 template <class Type> void dataProcessor::readMatrix (char * fileName, matrixType<Type> & MTObject) {
 
-  std::ifstream dataStream(fileName, std::ios::in);
+	std::ifstream dataStream(fileName, std::ios::in);
 
-  Type data;
-  char endOfLine;
-  int auxColumnLength = MTObject.columnRefference;
+	Type data;
+	char endOfLine;
+	int auxColumnLength = MTObject.columnRefference;
 
-  if (dataStream.is_open()) {
+	if (dataStream.is_open()) {
 
-    while (dataStream >> data) {
+		while (dataStream >> data) {
 
-      MTObject.matrix[MTObject.lineRefference][auxColumnLength] = data;
+			MTObject.matrix[MTObject.lineRefference][auxColumnLength] = data;
 
-      auxColumnLength += 1;
+			auxColumnLength += 1;
 
-      dataStream.get (endOfLine);
+			dataStream.get (endOfLine);
 
-      if (endOfLine == '\n') {
-        MTObject.lineRefference += 1;
-        MTObject.columnRefference = auxColumnLength;
-        auxColumnLength = 0;
-      }
-    }
+			if (endOfLine == '\n') {
+			MTObject.lineRefference += 1;
+			MTObject.columnRefference = auxColumnLength;
+			auxColumnLength = 0;
+			}
+		}
 
-    if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-    if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+		if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+		if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
 
-    dataStream.close();
-  }
-  else throw systemException("Unable to open file");
+		dataStream.close();
+	}
+	else throw systemException("Unable to open file");
 }
 
 template <class Type> void dataProcessor::putsMatrix (matrixType<Type> & MTObject) {
@@ -215,14 +215,14 @@ template <class Type> void dataProcessor::paralelValuesWithSD (matrixType<Type> 
 
 template <class Type> void dataProcessor::matrixTransposition (matrixType<Type> & MTObject) {
 
-  if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-  if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+	if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+	if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
 
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
-      std::cout << MTObject.matrix[jiterator][iterator] << " ";
-    std::cout << '\n';
-  }
+	for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
+	for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+		std::cout << MTObject.matrix[jiterator][iterator] << " ";
+	std::cout << '\n';
+	}
 }
 
 int main(int argc, char const *argv[]) {
@@ -230,7 +230,7 @@ int main(int argc, char const *argv[]) {
 	dataProcessor __initializeProcessor__;
 	matrixType<int> MTRefference;
 
-  auto start = high_resolution_clock::now();
+	auto start = high_resolution_clock::now();
 
 	__initializeProcessor__.readMatrix ((char*)"matrix.data", MTRefference);
 	__initializeProcessor__.putsMatrix (MTRefference);
@@ -240,16 +240,16 @@ int main(int argc, char const *argv[]) {
 	__initializeProcessor__.paralelValuesWithMD (MTRefference);
 	std::cout << '\n';
 	__initializeProcessor__.paralelValuesWithSD (MTRefference);
-  std::cout << '\n';
-  __initializeProcessor__.matrixTransposition (MTRefference);
-  std::cout << '\n';
-  __initializeProcessor__.putsMatrix (MTRefference);
+	std::cout << '\n';
+	__initializeProcessor__.matrixTransposition (MTRefference);
+	std::cout << '\n';
+	__initializeProcessor__.putsMatrix (MTRefference);
 
-  auto stop = high_resolution_clock::now();
+	auto stop = high_resolution_clock::now();
 
-  auto duration = duration_cast<seconds>(stop - start);
+	auto duration = duration_cast<seconds>(stop - start);
 
-  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
+	std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
 
 	return 0;
 }
