@@ -47,16 +47,16 @@ public:
 
 template <class Type> bool validationRules::isNegative (Type parameter) {
 
-    if (parameter < 0) return true;
+  if (parameter < 0) return true;
 
-    return false;
+  return false;
 }
 
 template <class Type> bool validationRules::isZero (Type parameter) {
 
-    if (parameter == 0) return true;
+  if (parameter == 0) return true;
 
-    return false;
+  return false;
 }
 
 template <class Type> class oneDimensionalArrayType {
