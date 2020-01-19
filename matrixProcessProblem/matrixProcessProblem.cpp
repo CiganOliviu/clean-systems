@@ -4,8 +4,8 @@
     * read matrix from a file
     * print matrix
     * the elements from the main diagonal who are prime
-	* the paralel values with main diagonal values of order X
-	* the paralel values with secondary diagonal values of order X
+		* the paralel values with main diagonal values of order X
+		* the paralel values with secondary diagonal values of order X
 */
 
 #include <chrono>
@@ -99,7 +99,7 @@ public:
 	template <class Type> void primeValuesFromMainDiagonal (matrixType<Type> & MTObject);
 	template <class Type> void paralelValuesWithMD (matrixType<Type> & MTObject);
 	template <class Type> void paralelValuesWithSD (matrixType<Type> & MTObject);
-  	template <class Type> void matrixTransposition (matrixType<Type> & MTObject);
+  template <class Type> void matrixTransposition (matrixType<Type> & MTObject);
 
 	virtual ~dataProcessor () {}
 };
@@ -219,9 +219,9 @@ template <class Type> void dataProcessor::matrixTransposition (matrixType<Type> 
 	if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
 
 	for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
-	for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
-		std::cout << MTObject.matrix[jiterator][iterator] << " ";
-	std::cout << '\n';
+		for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+			std::cout << MTObject.matrix[jiterator][iterator] << " ";
+		std::cout << '\n';
 	}
 }
 
