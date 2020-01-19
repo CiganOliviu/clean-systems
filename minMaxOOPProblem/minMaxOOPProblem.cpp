@@ -38,12 +38,12 @@ const char * systemException::what () const throw () {
 class validationRules {
 
 public:
-	validationRules () {}
+  validationRules () {}
 
-	template <class Type> bool isNegative (Type parameter);
-	template <class Type> bool isZero (Type parameter);
+  template <class Type> bool isNegative (Type parameter);
+  template <class Type> bool isZero (Type parameter);
 
-	virtual ~validationRules () {}
+  virtual ~validationRules () {}
 };
 
 template <class Type> bool validationRules::isNegative (Type parameter) {
