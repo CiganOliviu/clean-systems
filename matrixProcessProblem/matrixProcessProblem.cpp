@@ -141,9 +141,9 @@ template <class Type> void dataProcessor::readMatrix (char * fileName, matrixTyp
       dataStream.get (endOfLine);
 
       if (endOfLine == '\n') {
-      MTObject.lineRefference += 1;
-      MTObject.columnRefference = auxColumnLength;
-      auxColumnLength = 0;
+        MTObject.lineRefference += 1;
+        MTObject.columnRefference = auxColumnLength;
+        auxColumnLength = 0;
       }
     }
 
