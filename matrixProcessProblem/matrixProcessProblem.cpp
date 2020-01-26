@@ -249,7 +249,7 @@ int main(int argc, char const *argv[]) {
 
   auto duration = duration_cast<seconds>(stop - start);
 
-  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
+  std::cout << "\n\n\nTime taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }

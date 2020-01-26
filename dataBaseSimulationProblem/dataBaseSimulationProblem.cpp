@@ -6,6 +6,7 @@
     * select all data from it
 */
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -13,6 +14,8 @@
 #ifndef STD_LENGTH
 #define STD_LENGTH 100
 #endif
+
+using namespace std::chrono;
 
 class systemException : public std::exception {
 private:
@@ -147,8 +150,16 @@ int main(int argc, char const *argv[]) {
   dataBaseTable students;
   operationsOnDataBaseTable operations;
 
+  auto start = high_resolution_clock::now();
+
   operations.readDataFromDataBaseTable ((char*)"dataBase.database", students);
   operations.putsDataFromDataBaseTable (students);
+
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "\n\n\nTime taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }

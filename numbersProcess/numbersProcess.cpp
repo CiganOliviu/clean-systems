@@ -208,6 +208,8 @@ template <class Type> oneDimensionalArrayType<int> numberProcess::frequencyNumbe
 
 int main(int argc, char const *argv[]) {
 
+  auto start = high_resolution_clock::now();
+
   numberProcess processDataInitialization;
   portData initializePortData;
   oneDimensionalArrayType<int> ODARefference;
@@ -219,6 +221,12 @@ int main(int argc, char const *argv[]) {
   processDataInitialization.outputOneDimensionalArray (ODARefference);
   initializePortData.portOneDimensionalArray (frequencyODA, processDataInitialization.frequencyNumbersAppereances (ODARefference));
   processDataInitialization.outputOneDimensionalArray (frequencyODA);
+
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "\n\n\nTime taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }
