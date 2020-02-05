@@ -97,11 +97,19 @@ int main(int argc, char const *argv[]) {
 
   std::cin >> number >> base;
 
+  auto start = high_resolution_clock::now();
+
   processedNumber = processNumber.convertNumberToAnyBase(number, base);
 
   processNumber.reverseNumber(processedNumber);
 
-  std::cout << processedNumber;
+  std::cout << processedNumber << '\n';
+
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }
