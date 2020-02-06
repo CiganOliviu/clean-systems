@@ -89,7 +89,7 @@ private:
   validationRules __rules__;
 
   template <class Type> bool isPrime (Type parameter);
-    template <class Type> void interchangeValues (Type * parameterOne, Type * parameterTwo);
+  template <class Type> void interchangeValues (Type * parameterOne, Type * parameterTwo);
 
 public:
   dataProcessor () {}

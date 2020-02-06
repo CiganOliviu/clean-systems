@@ -62,7 +62,7 @@ private:
 public:
   fibonacciWorkFlow () {}
 
-  int returnFiboNumber (int number);
+  int returnNearestOrFiboNumber (int number);
 
   virtual ~fibonacciWorkFlow () {}
 };
@@ -83,7 +83,7 @@ int fibonacciWorkFlow::returnFibonacciNumber (int numberIndex) {
   return returnFibonacciNumber(numberIndex - 1) + returnFibonacciNumber(numberIndex - 2);
 }
 
-int fibonacciWorkFlow::returnFiboNumber (int number) {
+int fibonacciWorkFlow::returnNearestOrFiboNumber (int number) {
 
   int underNumber, aboveNumber, closestNumber, iterator = 1;
   bool runTimeChecker = true;
@@ -115,7 +115,7 @@ int main(int argc, char const *argv[]) {
 
   fibonacciWorkFlow fibonacci;
 
-  std::cout << fibonacci.returnFiboNumber (number) << '\n' << '\n';
+  std::cout << fibonacci.returnNearestOrFiboNumber (number) << '\n' << '\n';
 
   auto stop = high_resolution_clock::now();
 
