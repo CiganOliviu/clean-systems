@@ -1,3 +1,12 @@
+/*
+  graph intro problem
+  Task:
+    * read graph by edges list
+    * output the adjacency matrix
+    * output the valency of vertices
+    * output the neightbours list
+*/
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
