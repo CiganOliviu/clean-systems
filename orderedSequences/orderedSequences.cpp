@@ -1,3 +1,11 @@
+/*
+  ordered sequences
+  Tasks:
+    * read one dimensional array
+    * print one dimensional array
+    * get the ordered sequences from the array
+*/
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
