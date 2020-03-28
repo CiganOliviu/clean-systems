@@ -111,6 +111,64 @@ template <class Type> void portData::portMatrices (matrixType<Type> & matrixObje
         matrixObjectOne.matrix[iterator][jiterator] = matrixObjectTwo.matrix[iterator][jiterator];
 }
 
+class inputOutputOperations {
+private:
+  validationRules __validations__;
+
+public:
+  inputOutputOperations () {}
+
+  template <class Type> void readMatrix (char * fileName, matrixType<Type> & MTObject);
+  template <class Type> void putsMatrix (matrixType<Type> & MTObject);
+
+  virtual ~inputOutputOperations () {}
+};
+
+template <class Type> void inputOutputOperations::readMatrix (char * fileName, matrixType<Type> & MTObject) {
+
+  std::ifstream dataStream(fileName, std::ios::in);
+
+  Type data;
+  char endOfLine;
+  int auxColumnLength = MTObject.columnRefference;
+
+  if (dataStream.is_open()) {
+
+    while (dataStream >> data) {
+
+      MTObject.matrix[MTObject.lineRefference][auxColumnLength] = data;
+
+      auxColumnLength += 1;
+
+      dataStream.get (endOfLine);
+
+      if (endOfLine == '\n') {
+        MTObject.lineRefference += 1;
+        MTObject.columnRefference = auxColumnLength;
+        auxColumnLength = 0;
+      }
+    }
+
+    if (__validations__.isZero(MTObject.lineRefference) || __validations__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+    if (__validations__.isNegative(MTObject.lineRefference) || __validations__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+
+    dataStream.close();
+  }
+  else throw systemException("Unable to open file");
+}
+
+template <class Type> void inputOutputOperations::putsMatrix (matrixType<Type> & MTObject) {
+
+  if (__validations__.isZero(MTObject.lineRefference) || __validations__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+  if (__validations__.isNegative(MTObject.lineRefference) || __validations__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+
+  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
+    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+      std::cout << MTObject.matrix[iterator][jiterator] << " ";
+    std::cout << '\n';
+  }
+}
+
 class matrixGeneratorBasedOnConditions {
 private:
   validationRules __rules__;
@@ -122,8 +180,6 @@ private:
 public:
   matrixGeneratorBasedOnConditions () {}
 
-  template <class Type> void readMatrix (char * fileName, matrixType<Type> & MTObject);
-  template <class Type> void putsMatrix (matrixType<Type> MTObject);
   template <class Type> matrixType<Type> modifyMatrix (matrixType<Type> MTObject);
 
   virtual ~matrixGeneratorBasedOnConditions () {}
@@ -158,51 +214,6 @@ template <class Type> int matrixGeneratorBasedOnConditions::sumOfColumn (matrixT
   return sum;
 }
 
-template <class Type> void matrixGeneratorBasedOnConditions::readMatrix (char * fileName, matrixType<Type> & MTObject) {
-
-  std::ifstream dataStream(fileName, std::ios::in);
-
-  Type data;
-  char endOfLine;
-  int auxColumnLength = MTObject.columnRefference;
-
-  if (dataStream.is_open()) {
-
-    while (dataStream >> data) {
-
-      MTObject.matrix[MTObject.lineRefference][auxColumnLength] = data;
-
-      auxColumnLength += 1;
-
-      dataStream.get (endOfLine);
-
-      if (endOfLine == '\n') {
-        MTObject.lineRefference += 1;
-        MTObject.columnRefference = auxColumnLength;
-        auxColumnLength = 0;
-      }
-    }
-
-    if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-    if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
-
-    dataStream.close();
-  }
-  else throw systemException("Unable to open file");
-}
-
-template <class Type> void matrixGeneratorBasedOnConditions::putsMatrix (matrixType<Type> MTObject) {
-
-  if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-  if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
-
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
-      std::cout << MTObject.matrix[iterator][jiterator] << " ";
-    std::cout << '\n';
-  }
-}
-
 template <class Type> matrixType<Type> matrixGeneratorBasedOnConditions::modifyMatrix (matrixType<Type> MTObject) {
 
   if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
@@ -230,15 +241,16 @@ int main(int argc, char const *argv[]) {
 
   matrixType<int> MTRefference, generatedMTRefference;
   matrixGeneratorBasedOnConditions __matrixGeneratorInit__;
+  inputOutputOperations io;
   portData __port__;
 
   auto start = high_resolution_clock::now();
 
-  __matrixGeneratorInit__.readMatrix ((char*)"matrix.data", MTRefference);
-  __matrixGeneratorInit__.putsMatrix (MTRefference);
+  io.readMatrix ((char*)"matrix.data", MTRefference);
+  io.putsMatrix (MTRefference);
   __port__.portMatrices(generatedMTRefference, __matrixGeneratorInit__.modifyMatrix (MTRefference));
   std::cout << '\n';
-  __matrixGeneratorInit__.putsMatrix (generatedMTRefference);
+  io.putsMatrix (generatedMTRefference);
 
   auto stop = high_resolution_clock::now();
 

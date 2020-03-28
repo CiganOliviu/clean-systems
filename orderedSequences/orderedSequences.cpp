@@ -99,21 +99,20 @@ template <class Type> void objectsWorkFlow::portData (oneDimensionalArrayType<Ty
     ODARefferenceOne.oneDimensionalArray[iterator] = ODARefferenceTwo.oneDimensionalArray[iterator];
 }
 
-class orderedSequencesWorkFlow {
+class inputOutputOperations {
 private:
   validationRules __validations__;
 
 public:
- orderedSequencesWorkFlow () {}
+  inputOutputOperations () {}
 
- template <class Type> void readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference);
- template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
- template <class Type> oneDimensionalArrayType<Type> getOrderedSequenceInOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
+  template <class Type> void readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference);
+  template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
 
-  virtual ~orderedSequencesWorkFlow () {}
+  virtual ~inputOutputOperations () {}
 };
 
-template <class Type> void orderedSequencesWorkFlow::readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference) {
+template <class Type> void inputOutputOperations::readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference) {
 
   std::ifstream dataStream(fileName, std::ios::in);
   Type data;
@@ -134,7 +133,7 @@ template <class Type> void orderedSequencesWorkFlow::readOneDimensionalArray (ch
     throw systemException ("Unable to open file");
 }
 
-template <class Type> void orderedSequencesWorkFlow::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
+template <class Type> void inputOutputOperations::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
@@ -143,6 +142,18 @@ template <class Type> void orderedSequencesWorkFlow::outputOneDimensionalArray (
     std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
   std::cout << '\n' << '\n' << '\n';
 }
+
+class orderedSequencesWorkFlow {
+private:
+  validationRules __validations__;
+
+public:
+ orderedSequencesWorkFlow () {}
+
+ template <class Type> oneDimensionalArrayType<Type> getOrderedSequenceInOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
+
+  virtual ~orderedSequencesWorkFlow () {}
+};
 
 template <class Type> oneDimensionalArrayType<Type> orderedSequencesWorkFlow::getOrderedSequenceInOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
 
@@ -170,16 +181,17 @@ int main(int argc, char const *argv[]) {
   objectsWorkFlow objectsRefference;
   oneDimensionalArrayType<int> ODAObject;
   oneDimensionalArrayType<int> orderedSequence;
+  inputOutputOperations io;
   orderedSequencesWorkFlow ODWorkFlow;
 
   auto start = high_resolution_clock::now();
 
-  ODWorkFlow.readOneDimensionalArray<int> ((char*)"ODA.data", ODAObject);
-  ODWorkFlow.outputOneDimensionalArray<int> (ODAObject);
+  io.readOneDimensionalArray<int> ((char*)"ODA.data", ODAObject);
+  io.outputOneDimensionalArray<int> (ODAObject);
 
   objectsRefference.portData<int> (orderedSequence, ODWorkFlow.getOrderedSequenceInOneDimensionalArray<int> (ODAObject));
 
-  ODWorkFlow.outputOneDimensionalArray<int> (orderedSequence);
+  io.outputOneDimensionalArray<int> (orderedSequence);
 
   auto stop = high_resolution_clock::now();
 

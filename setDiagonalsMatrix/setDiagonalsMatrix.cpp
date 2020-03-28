@@ -80,23 +80,22 @@ public:
   virtual ~matrixType () {}
 };
 
-class matrixProcessor {
+class inputOutputOperations {
 private:
-  validationRules __rules__;
+  validationRules __validations__;
 
 public:
-  matrixProcessor () {}
+  inputOutputOperations () {}
 
-  template <class Type> void putsMatrix (matrixType<Type> MTObject);
-  template <class Type> void generateMatrix (matrixType<Type> & MTObject);
+  template <class Type> void putsMatrix (matrixType<Type> & MTObject);
 
-  virtual ~matrixProcessor () {}
+  virtual ~inputOutputOperations () {}
 };
 
-template <class Type> void matrixProcessor::putsMatrix (matrixType<Type> MTObject) {
+template <class Type> void inputOutputOperations::putsMatrix (matrixType<Type> & MTObject) {
 
-  if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-  if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+  if (__validations__.isZero(MTObject.lineRefference) || __validations__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+  if (__validations__.isNegative(MTObject.lineRefference) || __validations__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
 
   for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
     for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
@@ -104,6 +103,18 @@ template <class Type> void matrixProcessor::putsMatrix (matrixType<Type> MTObjec
     std::cout << '\n';
   }
 }
+
+class matrixProcessor {
+private:
+  validationRules __rules__;
+
+public:
+  matrixProcessor () {}
+
+  template <class Type> void generateMatrix (matrixType<Type> & MTObject);
+
+  virtual ~matrixProcessor () {}
+};
 
 template <class Type> void matrixProcessor::generateMatrix (matrixType<Type> & MTObject) {
 
@@ -125,12 +136,21 @@ template <class Type> void matrixProcessor::generateMatrix (matrixType<Type> & M
 int main(int argc, char const *argv[]) {
 
   matrixProcessor processor;
+  inputOutputOperations io;
   matrixType<int> matrix;
 
   std::cin >> matrix.lineRefference;
 
+  auto start = high_resolution_clock::now();
+
   processor.generateMatrix (matrix);
-  processor.putsMatrix (matrix);
+  io.putsMatrix (matrix);
+
+  auto stop = high_resolution_clock::now();
+
+  auto duration = duration_cast<seconds>(stop - start);
+
+  std::cout << "Time taken by tasks: " << duration.count() << " seconds" << '\n';
 
   return 0;
 }

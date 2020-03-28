@@ -1,9 +1,6 @@
-
 /*
   Tasks:
-    * A pheasant phrase is represented by consecutive numbers
-      which have the property that the the last digit of the first
-      number equals with the first digit of the next number
+    * Count how many arrays are included in another array
 */
 
 #include <chrono>
@@ -122,77 +119,73 @@ class dataProcessing {
 private:
   validationRules __validations__;
 
-  int getTheLastDigit (int number);
-  int getTheFirstDigit (int number);
-  int maxNumber (int numberOne, int numberTwo);
+  int getMinimumValue (int parameterOne, int parameterTwo);
+  template <class Type> int countAssociatedElements (oneDimensionalArrayType<Type> ODARefference, Type associatedElement);
 
 public:
   dataProcessing () {}
 
-  template <class Type> int longestPheasantPhrase (oneDimensionalArrayType<Type> ODARefference);
+  template <class Type> int countIncludedArrays (oneDimensionalArrayType<Type> ODARefferenceOne, oneDimensionalArrayType<Type> ODARefferenceTwo);
 
   virtual ~dataProcessing () {}
 };
 
-int dataProcessing::getTheLastDigit (int number) {
+int dataProcessing::getMinimumValue (int parameterOne, int parameterTwo) {
 
-  if (__validations__.isZero(number)) throw systemException ("Unable to process number as zero");
-  if (__validations__.isNegative(number)) throw systemException ("Unable to process negative number");
+  if (parameterOne > parameterTwo) return parameterTwo;
 
-  return number % 10;
+  return parameterOne;
 }
 
-int dataProcessing::getTheFirstDigit (int number) {
-
-  if (__validations__.isZero(number)) throw systemException ("Unable to process number as zero");
-  if (__validations__.isNegative(number)) throw systemException ("Unable to process negative number");
-
-  while (number >= 10)
-    number /= 10;
-
-  return number;
-}
-
-int dataProcessing::maxNumber (int numberOne, int numberTwo) {
-
-  if (numberOne > numberTwo) return numberOne;
-
-  return numberTwo;
-}
-
-template <class Type> int dataProcessing::longestPheasantPhrase (oneDimensionalArrayType<Type> ODARefference) {
+template <class Type> int dataProcessing::countAssociatedElements (oneDimensionalArrayType<Type> ODARefference, Type associatedElement) {
 
   if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
   if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
 
-  int longestPhrase = 1;
-  int maxPhrase = 0;
+  int counter = 0;
 
-  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint - 1; iterator++) {
-    if (getTheLastDigit(ODARefference.oneDimensionalArray[iterator]) == getTheFirstDigit(ODARefference.oneDimensionalArray[iterator + 1]))
-      longestPhrase += 1;
-    else
-      longestPhrase = 1;
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    if (associatedElement == ODARefference.oneDimensionalArray[iterator])
+      counter += 1;
 
-    maxPhrase = maxNumber (maxPhrase, longestPhrase);
+  return counter;
+}
+
+template <class Type> int dataProcessing::countIncludedArrays (oneDimensionalArrayType<Type> ODARefferenceOne, oneDimensionalArrayType<Type> ODARefferenceTwo) {
+
+  if (__validations__.isZero(ODARefferenceOne.length)) throw systemException ("Unable to process length as zero");
+  if (__validations__.isNegative(ODARefferenceOne.length)) throw systemException ("Unable to process negative length");
+
+  if (__validations__.isZero(ODARefferenceTwo.length)) throw systemException ("Unable to process length as zero");
+  if (__validations__.isNegative(ODARefferenceTwo.length)) throw systemException ("Unable to process negative length");
+
+  int minimumValue = INT_MAX;
+  int auxiliarValue = 0;
+
+  for (size_t iterator = ODARefferenceOne.startPoint; iterator < ODARefferenceOne.length + ODARefferenceOne.endPoint; iterator++) {
+    auxiliarValue = countAssociatedElements (ODARefferenceTwo, ODARefferenceOne.oneDimensionalArray[iterator]);
+    minimumValue = getMinimumValue(minimumValue, auxiliarValue);
   }
 
-  return maxPhrase;
+  return minimumValue;
 }
 
 int main(int argc, char const *argv[]) {
 
   inputOutputOperations io;
   dataProcessing processing;
-  oneDimensionalArrayType<int> ODAObject;
-
-  io.readOneDimensionalArray ((char*)"ODA.data", ODAObject);
+  oneDimensionalArrayType<int> ODAOne;
+  oneDimensionalArrayType<int> ODATwo;
 
   auto start = high_resolution_clock::now();
-  
-  io.outputOneDimensionalArray (ODAObject);
 
-  std::cout << processing.longestPheasantPhrase (ODAObject);
+  io.readOneDimensionalArray ((char*)"arrayOneData.data", ODAOne);
+  io.readOneDimensionalArray ((char*)"arrayTwoData.data", ODATwo);
+
+  io.outputOneDimensionalArray (ODAOne);
+  io.outputOneDimensionalArray (ODATwo);
+
+  std::cout << processing.countIncludedArrays (ODATwo, ODAOne) << '\n';
 
   auto stop = high_resolution_clock::now();
 

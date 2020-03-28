@@ -4,7 +4,7 @@
     * generate one dimensional array with first n prime values
     * output one dimensional array
     * generate matrix with first n prime values
-    * output matrix 
+    * output matrix
 */
 
 #include <chrono>
@@ -137,6 +137,43 @@ template <class Type> void portData::portMatrix (matrixType<Type> & matrixObject
         matrixObjectOne.matrix[iterator][jiterator] = matrixObjectTwo.matrix[iterator][jiterator];
 }
 
+class inputOutputOperations {
+private:
+  validationRules __validations__;
+
+public:
+  inputOutputOperations () {}
+
+  template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
+  template <class Type> void outputMatrix (matrixType<Type> & MTObject);
+
+  virtual ~inputOutputOperations () {}
+};
+
+template <class Type> void inputOutputOperations::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
+
+  if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
+  if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    if (ODARefference.oneDimensionalArray[iterator] > 0)
+      std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
+
+  std::cout << '\n';
+}
+
+template <class Type> void inputOutputOperations::outputMatrix (matrixType<Type> & MTObject) {
+
+  if (__validations__.isZero(MTObject.lineRefference) || __validations__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+  if (__validations__.isNegative(MTObject.lineRefference) || __validations__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+
+  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
+    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+      std::cout << MTObject.matrix[iterator][jiterator] << " ";
+    std::cout << '\n';
+  }
+}
+
 class arraysGenerator {
 private:
   validationRules __rules__;
@@ -147,10 +184,8 @@ public:
   arraysGenerator () {}
 
   template <class Type> matrixType<Type> generatePrimeMatrix (int stopLimitGenerator);
-  template <class Type> void outputMatrix (matrixType<Type> & MTObject);
 
   template <class Type> oneDimensionalArrayType<Type> generatePrimeOneDimensionalArray (int stopLimitGenerator);
-  template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODAObject);
 
   virtual ~arraysGenerator () {}
 };
@@ -197,18 +232,6 @@ template <class Type> matrixType<Type> arraysGenerator::generatePrimeMatrix (int
   return matrixRefference;
 }
 
-template <class Type> void arraysGenerator::outputMatrix (matrixType<Type> & MTObject) {
-
-  if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-  if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
-
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
-      std::cout << MTObject.matrix[iterator][jiterator] << " ";
-    std::cout << '\n';
-  }
-}
-
 template <class Type> oneDimensionalArrayType<Type> arraysGenerator::generatePrimeOneDimensionalArray (int stopLimitGenerator) {
 
   oneDimensionalArrayType<Type> ODARefference;
@@ -230,23 +253,12 @@ template <class Type> oneDimensionalArrayType<Type> arraysGenerator::generatePri
   return ODARefference;
 }
 
-template <class Type> void arraysGenerator::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
-
-  if (__rules__.isZero(ODARefference.length)) throw systemException ("Unable to handle length as zero");
-  if (__rules__.isNegative(ODARefference.length)) throw systemException ("Unable to handle negative length");
-
-  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
-    if (ODARefference.oneDimensionalArray[iterator] > 0)
-      std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
-
-  std::cout << '\n';
-}
-
 int main(int argc, char const *argv[]) {
 
   oneDimensionalArrayType<int> ODARefference;
   matrixType<int> matrixRefference;
   arraysGenerator generator;
+  inputOutputOperations io;
   portData __port__;
 
   int dataSize;
@@ -259,7 +271,7 @@ int main(int argc, char const *argv[]) {
   ODARefference.endPoint = 1;
 
   __port__.portOneDimensionalArray(ODARefference, generator.generatePrimeOneDimensionalArray<int>(dataSize));
-  generator.outputOneDimensionalArray(ODARefference);
+  io.outputOneDimensionalArray(ODARefference);
 
   std::cout << '\n';
 
@@ -268,7 +280,7 @@ int main(int argc, char const *argv[]) {
   matrixRefference.startLinePoint = 1;
   matrixRefference.startColumnPoint = 1;
 
-  generator.outputMatrix(matrixRefference);
+  io.outputMatrix(matrixRefference);
 
   auto stop = high_resolution_clock::now();
 

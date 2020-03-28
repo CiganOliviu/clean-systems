@@ -77,6 +77,50 @@ public:
   virtual ~oneDimensionalArrayType () {}
 };
 
+class inputOutputOperations {
+private:
+  validationRules __validations__;
+
+public:
+  inputOutputOperations () {}
+
+  template <class Type> void readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference);
+  template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
+
+  virtual ~inputOutputOperations () {}
+};
+
+template <class Type> void inputOutputOperations::readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference) {
+
+  std::ifstream dataStream(fileName, std::ios::in);
+  Type data;
+
+  if (dataStream.is_open()) {
+
+    while (dataStream >> data) {
+        ODARefference.oneDimensionalArray[ODARefference.length] = data;
+        ODARefference.length += 1;
+    }
+
+    if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
+    if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
+
+    dataStream.close();
+  }
+  else
+    throw systemException ("Unable to open file");
+}
+
+template <class Type> void inputOutputOperations::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
+
+  if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
+  if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
+
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
+    std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
+  std::cout << '\n' << '\n' << '\n';
+}
+
 class processData {
 private:
   validationRules __validations__;
@@ -87,8 +131,6 @@ private:
 public:
   processData () {}
 
-  template <class Type> void readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference);
-  template <class Type> void outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
   template <class Type> oneDimensionalArrayType<Type> getPrimeValueOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
   template <class Type> oneDimensionalArrayType<Type> getNonPrimeValueOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference);
   template <class Type> void bubbleSort (oneDimensionalArrayType<Type> ODARefference);
@@ -113,37 +155,6 @@ template <class Type> bool processData::isPrime (Type parameter) {
     if (parameter % iterator == 0) return false;
 
   return true;
-}
-
-template <class Type> void processData::readOneDimensionalArray (char * fileName, oneDimensionalArrayType<Type> ODARefference) {
-
-  std::ifstream dataStream(fileName, std::ios::in);
-  Type data;
-
-  if (dataStream.is_open()) {
-
-    while (dataStream >> data) {
-        ODARefference.oneDimensionalArray[ODARefference.length] = data;
-        ODARefference.length += 1;
-    }
-
-    if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
-    if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
-
-    dataStream.close();
-  }
-  else
-    throw systemException ("Unable to open file");
-}
-
-template <class Type> void processData::outputOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
-
-  if (__validations__.isZero(ODARefference.length)) throw systemException ("Unable to process length as zero");
-  if (__validations__.isNegative(ODARefference.length)) throw systemException ("Unable to process negative length");
-
-  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
-    std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
-  std::cout << '\n' << '\n' << '\n';
 }
 
 template <class Type> oneDimensionalArrayType<Type> processData::getPrimeValueOneDimensionalArray (oneDimensionalArrayType<Type> ODARefference) {
@@ -218,26 +229,27 @@ int main(int argc, char const *argv[]) {
 
   processData processDataObject;
   objectsWorkFlow objectsRefference;
+  inputOutputOperations io;
   oneDimensionalArrayType<int> ODAObject;
   oneDimensionalArrayType<int> primeValuesODA;
   oneDimensionalArrayType<int> nonePrimeValuesODA;
 
   auto start = high_resolution_clock::now();
 
-  processDataObject.readOneDimensionalArray<int> ((char*)"ODA.data", ODAObject);
-  processDataObject.outputOneDimensionalArray<int> (ODAObject);
+  io.readOneDimensionalArray<int> ((char*)"ODA.data", ODAObject);
+  io.outputOneDimensionalArray<int> (ODAObject);
 
   objectsRefference.portData<int> (primeValuesODA, processDataObject.getPrimeValueOneDimensionalArray<int> (ODAObject));
-  processDataObject.outputOneDimensionalArray<int> (primeValuesODA);
+  io.outputOneDimensionalArray<int> (primeValuesODA);
 
   objectsRefference.portData<int> (nonePrimeValuesODA, processDataObject.getNonPrimeValueOneDimensionalArray<int> (ODAObject));
-  processDataObject.outputOneDimensionalArray<int> (nonePrimeValuesODA);
+  io.outputOneDimensionalArray<int> (nonePrimeValuesODA);
 
   processDataObject.bubbleSort (primeValuesODA);
-  processDataObject.outputOneDimensionalArray (primeValuesODA);
+  io.outputOneDimensionalArray (primeValuesODA);
 
   processDataObject.bubbleSort (nonePrimeValuesODA);
-  processDataObject.outputOneDimensionalArray (nonePrimeValuesODA);
+  io.outputOneDimensionalArray (nonePrimeValuesODA);
 
   auto stop = high_resolution_clock::now();
 

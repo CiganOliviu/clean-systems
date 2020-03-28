@@ -1,3 +1,8 @@
+/*
+  Tasks:
+    * Get the center values of the matrix
+*/
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -73,6 +78,30 @@ public:
   virtual ~matrixType () {}
 };
 
+class inputOutputOperations {
+private:
+  validationRules __validations__;
+
+public:
+  inputOutputOperations () {}
+
+  template <class Type> void outputMatrix (matrixType<Type> & MTObject);
+
+  virtual ~inputOutputOperations () {}
+};
+
+template <class Type> void inputOutputOperations::outputMatrix (matrixType<Type> & MTObject) {
+
+  if (__validations__.isZero(MTObject.lineRefference) || __validations__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
+  if (__validations__.isNegative(MTObject.lineRefference) || __validations__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
+
+  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
+    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+      std::cout << MTObject.matrix[iterator][jiterator] << " ";
+    std::cout << '\n';
+  }
+}
+
 class dataProcessor {
 private:
   validationRules __rules__;
@@ -88,7 +117,6 @@ public:
   dataProcessor () {}
 
   template <class Type> void generateMatrix (matrixType<Type> & MTObject);
-  template <class Type> void putsMatrix (matrixType<Type> & MTObject);
   template <class Type> void processSpecificMatrix (matrixType<Type> MTObject);
 
   virtual ~dataProcessor () {}
@@ -172,18 +200,6 @@ template <class Type> void dataProcessor::generateMatrix (matrixType<Type> & MTO
     }
 }
 
-template <class Type> void dataProcessor::putsMatrix (matrixType<Type> & MTObject) {
-
-  if (__rules__.isZero(MTObject.lineRefference) || __rules__.isZero(MTObject.columnRefference)) throw systemException ("Unable to process with line or column as zero");
-  if (__rules__.isNegative(MTObject.lineRefference) || __rules__.isNegative(MTObject.columnRefference)) throw systemException ("Unable to process with negative line or column");
-
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++) {
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
-      std::cout << MTObject.matrix[iterator][jiterator] << " ";
-    std::cout << '\n';
-  }
-}
-
 template <class Type> void dataProcessor::processSpecificMatrix (matrixType<Type> MTObject) {
 
   if (isOdd(MTObject.lineRefference))
@@ -196,6 +212,7 @@ template <class Type> void dataProcessor::processSpecificMatrix (matrixType<Type
 int main(int argc, char const *argv[]) {
 
   dataProcessor __initializeProcessor__;
+  inputOutputOperations io;
   matrixType<int> MTRefference;
 
   auto start = high_resolution_clock::now();
@@ -204,7 +221,7 @@ int main(int argc, char const *argv[]) {
   MTRefference.columnRefference = MTRefference.lineRefference;
 
   __initializeProcessor__.generateMatrix (MTRefference);
-  __initializeProcessor__.putsMatrix (MTRefference);
+  io.outputMatrix (MTRefference);
 
   std::cout << '\n' << '\n';
 
