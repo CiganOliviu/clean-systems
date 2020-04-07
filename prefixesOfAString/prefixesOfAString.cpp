@@ -92,7 +92,7 @@ void stringWorkFlow::readOneDimensionalArray (oneDimensionalArrayType<char> data
   if (__validations__.isNegative(dataWorkFlow.oneDimensionalArray)) throw systemException ("Unable to process negative length");
 
   std::cin >> dataWorkFlow.oneDimensionalArray;
-  
+
 }
 
 void stringWorkFlow::printAllPrefixesInString (oneDimensionalArrayType<char> dataWorkFlow) {
