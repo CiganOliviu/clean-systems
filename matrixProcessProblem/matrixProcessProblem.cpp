@@ -1,51 +1,9 @@
-/*
-  matrix data process problem
-  Tasks:
-    * read matrix from a file
-    * print matrix
-    * the elements from the main diagonal who are prime
-    * the paralel values with main diagonal values of order X
-    * the paralel values with secondary diagonal values of order X
-*/
-
-#include <chrono>
-#include <fstream>
-#include <iostream>
-#include <math.h>
-
-#ifndef MATRIX_STD_LENGTH
-#define MATRIX_STD_LENGTH 100
-#endif
-
-using namespace std::chrono;
-
-class systemException : public std::exception {
-private:
-  std::string processMessage;
-
-public:
-  systemException (std::string errorMessage) : processMessage(errorMessage) {}
-
-  const char * what () const throw ();
-
-  virtual ~systemException () throw () {}
-};
+#include "matrixProcessProblemDef.hpp"
 
 const char * systemException::what () const throw () {
 
   return processMessage.c_str();
 }
-
-class validationRules {
-
-public:
-  validationRules () {}
-
-  template <class Type> bool isNegative (Type parameter);
-  template <class Type> bool isZero (Type parameter);
-
-  virtual ~validationRules () {}
-};
 
 template <class Type> bool validationRules::isNegative (Type parameter) {
 
@@ -60,49 +18,6 @@ template <class Type> bool validationRules::isZero (Type parameter) {
 
     return false;
 }
-
-template <class Type> class matrixType {
-private:
-  int standardSize = 0;
-
-public:
-  matrixType () {}
-
-  int line = standardSize;
-  int & lineRefference = line;
-  int column = standardSize;
-  int & columnRefference = column;
-
-  int startLinePoint = standardSize;
-  int endLinePoint = standardSize;
-  int startColumnPoint = standardSize;
-  int endColumnPoint = standardSize;
-
-  Type matrix[MATRIX_STD_LENGTH][MATRIX_STD_LENGTH];
-
-  virtual ~matrixType () {}
-};
-
-class dataProcessor {
-
-private:
-  validationRules __rules__;
-
-  template <class Type> bool isPrime (Type parameter);
-  template <class Type> void interchangeValues (Type * parameterOne, Type * parameterTwo);
-
-public:
-  dataProcessor () {}
-
-  template <class Type> void readMatrix (char * fileName, matrixType<Type> & MTObject);
-  template <class Type> void putsMatrix (matrixType<Type> & MTObject);
-  template <class Type> void primeValuesFromMainDiagonal (matrixType<Type> & MTObject);
-  template <class Type> void paralelValuesWithMD (matrixType<Type> & MTObject);
-  template <class Type> void paralelValuesWithSD (matrixType<Type> & MTObject);
-  template <class Type> void matrixTransposition (matrixType<Type> & MTObject);
-
-  virtual ~dataProcessor () {}
-};
 
 template <class Type> bool dataProcessor::isPrime (Type parameter) {
 
@@ -190,8 +105,8 @@ template <class Type> void dataProcessor::paralelValuesWithMD (matrixType<Type> 
 
   if (__rules__.isZero(order)) throw systemException ("Unable to process with order as zero");
 
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++)
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+  for (int iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++)
+    for (int jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
       if (abs(iterator - jiterator) == order) std::cout << MTObject.matrix[iterator][jiterator] << " ";
   std::cout << '\n';
 }
@@ -207,8 +122,8 @@ template <class Type> void dataProcessor::paralelValuesWithSD (matrixType<Type> 
 
   if (__rules__.isZero(order)) throw systemException ("Unable to process with order as zero");
 
-  for (size_t iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++)
-    for (size_t jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
+  for (int iterator = MTObject.startLinePoint; iterator < MTObject.lineRefference + MTObject.endLinePoint; iterator++)
+    for (int jiterator = MTObject.startColumnPoint; jiterator < MTObject.columnRefference + MTObject.endColumnPoint; jiterator++)
       if (abs(iterator + jiterator - MTObject.line + 1) == order) std::cout << MTObject.matrix[iterator][jiterator] << " ";
   std::cout << '\n';
 }

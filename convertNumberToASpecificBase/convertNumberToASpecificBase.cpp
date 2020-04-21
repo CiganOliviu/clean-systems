@@ -1,41 +1,9 @@
-/*
-  convert a number to a specific base
-  Tasks:
-    * convert a number to a specific base
-*/
-
-#include <chrono>
-#include <iostream>
-
-using namespace std::chrono;
-
-class systemException : public std::exception {
-private:
-  std::string processMessage;
-
-public:
-  systemException (std::string errorMessage) : processMessage(errorMessage) {}
-
-  const char * what () const throw ();
-
-  virtual ~systemException () throw () {}
-};
+#include "convertNumberToASpecificBaseDef.hpp"
 
 const char * systemException::what () const throw () {
 
   return processMessage.c_str();
 }
-
-class validationRules {
-
-public:
-  validationRules () {}
-
-  template <class Type> bool isNegative (Type parameter);
-  template <class Type> bool isZero (Type parameter);
-
-  virtual ~validationRules () {}
-};
 
 template <class Type> bool validationRules::isNegative (Type parameter) {
 
@@ -50,19 +18,6 @@ template <class Type> bool validationRules::isZero (Type parameter) {
 
   return false;
 }
-
-class numberConversion {
-private:
-  validationRules __validations__;
-
-public:
-  numberConversion () {}
-
-  std::string convertNumberToAnyBase (int number, int base);
-  void reverseNumber (std::string & number);
-
-  virtual ~numberConversion () {}
-};
 
 void numberConversion::reverseNumber (std::string & number) {
 

@@ -1,47 +1,9 @@
-/*
-  prefixes of a string
-  Tasks:
-    * print all combination of prefixes of a string
-*/
-
-#include <chrono>
-#include <fstream>
-#include <iostream>
-#include <string.h>
-
-#ifndef STD_LENGTH
-#define STD_LENGTH 100000
-#endif
-
-using namespace std::chrono;
-
-class systemException : public std::exception {
-private:
-  std::string processMessage;
-
-public:
-  systemException (std::string errorMessage) : processMessage(errorMessage) {}
-
-  const char * what () const throw ();
-
-  virtual ~systemException () throw () {}
-};
+#include "concatenatePrefixesDef.hpp"
 
 const char * systemException::what () const throw () {
 
   return processMessage.c_str();
 }
-
-class validationRules {
-
-public:
-  validationRules () {}
-
-  bool isNegative (char parameter[]);
-  bool isZero (char parameter[]);
-
-  virtual ~validationRules () {}
-};
 
 bool validationRules::isNegative (char parameter[]) {
 
@@ -56,35 +18,6 @@ bool validationRules::isZero (char parameter[]) {
 
   return false;
 }
-
-template <class Type> class oneDimensionalArrayType {
-private:
-  int standardSize = 0;
-
-public:
-  oneDimensionalArrayType () {}
-
-  int & length = standardSize;
-  int startPoint = standardSize;
-  int endPoint = standardSize;
-
-  Type * oneDimensionalArray = new Type[STD_LENGTH];
-
-  virtual ~oneDimensionalArrayType () {}
-};
-
-class stringWorkFlow {
-private:
-  validationRules __validations__;
-
-public:
-  stringWorkFlow () {}
-
-  void readOneDimensionalArray (oneDimensionalArrayType<char> dataWorkFlow);
-  void printConcatenatedPrefixes (oneDimensionalArrayType<char> dataWorkFlow);
-
-  virtual ~stringWorkFlow () {}
-};
 
 void stringWorkFlow::readOneDimensionalArray (oneDimensionalArrayType<char> dataWorkFlow) {
 
