@@ -1,5 +1,5 @@
 /*
-  prefixes of a string
+  remove floating point numbers from char array problem
   Tasks:
     * remove floating numbers from a sequence
 */
