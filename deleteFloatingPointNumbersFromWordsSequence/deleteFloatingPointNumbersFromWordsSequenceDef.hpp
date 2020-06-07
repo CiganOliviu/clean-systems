@@ -1,7 +1,7 @@
 /*
   Sort char array
   Tasks:
-    * sort a given char array
+    * Delete floating point numbers from a char array
 */
 
 #include <chrono>
@@ -67,16 +67,14 @@ public:
   virtual ~inputOutputSystem () {}
 };
 
-class arraySortEngine {
+class removerProcessor {
 private:
   validationRules __validations__;
 
-  template <class Type> void interchangeValues (Type & parameterOne, Type & parameterTwo);
-
 public:
-  arraySortEngine () {}
+  removerProcessor () {}
 
-  template <class Type> void bubbleSortODA (oneDimensionalArrayType<Type> ODAObject);
+  void RemoveFloatingPointNumbersFromWordsSequence (oneDimensionalArrayType<char> ODAObject);
 
-  virtual ~arraySortEngine () {}
+  virtual ~removerProcessor () {}
 };
