@@ -111,7 +111,7 @@ template <class Type> void arrayWorkFlow::outputPrimeNumbersFromArray (oneDimens
     if (isPrime(ODARefference.oneDimensionalArray[iterator]))
       std::cout << ODARefference.oneDimensionalArray[iterator] << " ";
   
-  std::cout << '\n' << '\n';
+  std::cout << '\n';
 }
 
 template <class Type> void arrayWorkFlow::deletePrimeNumbersFromArray (oneDimensionalArrayType<Type> ODARefference) {
@@ -147,12 +147,12 @@ template <class Type> void arrayWorkFlow::replaceDoubledValuesFromODAByDigitsSum
   int digitsSum;
   int positionToChange = 0;
 
-  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint - 1; iterator++)
+  for (size_t iterator = ODARefference.startPoint; iterator < ODARefference.length + ODARefference.endPoint; iterator++)
     if (ODARefference.oneDimensionalArray[iterator] == ODARefference.oneDimensionalArray[iterator + 1]) {
 
       digitsSum = returnSumOfDigits (ODARefference.oneDimensionalArray[iterator]);
 
-      positionToChange = findPositionToInsertInSortedArray (ODARefference, digitsSum);
+      positionToChange = findPositionToInsertInSortedArray (ODARefference, ODARefference.oneDimensionalArray[iterator]);
 
       ODARefference.oneDimensionalArray[positionToChange] = digitsSum;
     }
@@ -183,6 +183,7 @@ int main (int argc, const char * argv[]) {
 
   workflow.replaceDoubledValuesFromODAByDigitsSum<int> (ODA);
   workflow.sortByBubbleSort<int> (ODA);
+  IOoperations.outputOneDimensionalArray<int> (ODA);
 
   auto stop = high_resolution_clock::now();
 
