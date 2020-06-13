@@ -83,13 +83,13 @@ oneDimensionalArrayType<char> stringWorkFlow::decodeWord (oneDimensionalArrayTyp
   result.length = 100;
 
   for (int iterator = strlen (dataWorkFlowTwo.oneDimensionalArray) - 1; iterator >= dataWorkFlowTwo.startPoint; iterator--)
-    if (isEven (dataWorkFlowTwo.oneDimensionalArray[iterator])) {
+    if (isEven (convertCharToInt (dataWorkFlowTwo.oneDimensionalArray[iterator]))) {
       result.oneDimensionalArray[contor] = dataWorkFlowOne.oneDimensionalArray[iterator];
       contor += 1;
     }
 
   for (int iterator = dataWorkFlowTwo.startPoint; iterator < strlen (dataWorkFlowTwo.oneDimensionalArray); iterator++)
-    if (isOdd (dataWorkFlowTwo.oneDimensionalArray[iterator])) {
+    if (isOdd (convertCharToInt (dataWorkFlowTwo.oneDimensionalArray[iterator]))) {
       result.oneDimensionalArray[contor] = dataWorkFlowOne.oneDimensionalArray[iterator];
       contor += 1;
   }
